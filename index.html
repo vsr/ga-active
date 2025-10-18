@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>GA4 Active Users</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/picocss/2.1.1/pico.min.css">
+        <style>
+            #app {
+                display: flex;
+                gap: 1em;
+            }
+            .value {
+                text-align: center;
+            }
+        </style>
+    </head>
+    <body>
+        <main class="container" id="app" role="group"></main>
+        <script>
+            /* TODO: Replace with your GA4 Property IDs and names */
+            const properties = [
+                {
+                    name: "Property Name",
+                    id: "00000000"
+                },
+            ];
+            /* TODO: Replace <REGION> and <PROJECT_ID> with your Cloud Function's region and project ID */
+            const apiBaseUrl = "https://us-central1-api-project-<REGION>-<PROJECT_ID>.cloudfunctions.net";
+
+            function initGaActiveUsers(properties, root) {
+                if (!root) 
+                    return console.error("Please pass a DOM node.");
+                root.innerHTML = "";
+                properties.forEach((property) => {
+                    fetch(`${apiBaseUrl}/getGa4RealtimeUsers?propertyId=${property.id}`)
+                        .then((response) => response.json())
+                        .then((data) => {
+                            const el = document.createElement("article");
+                            el
+                                .classList
+                                .add("metric-card");
+                            el.innerHTML = `<header class="name">${property.name}</header><div class="value">${data.activeUsers}</div>`;
+                            root.appendChild(el);
+                        });
+                });
+            }
+
+            initGaActiveUsers(properties, document.querySelector("#app"));
+        </script>
+    </body>
+</html>
