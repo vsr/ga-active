@@ -1,0 +1,16 @@
+{
+  "name": "ga-active",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "deploy": "gcloud functions deploy getGa4RealtimeUsers --project=$GOOGLE_CLOUD_PROJECT --runtime nodejs20 --trigger-http --allow-unauthenticated"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@google-analytics/data": "^4.0.0"
+  }
+}
